@@ -1,6 +1,6 @@
 ---
 ansible_user: ubuntu
-network: mainnet
+network: shibarium
 node_type: sentry
-bor_version: v0.3.3
-heimdall_version: v0.3.0
+bor_version: v1.1.0-bone
+heimdall_version: v1.0.2-bone

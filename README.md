@@ -1,6 +1,6 @@
 # Node Ansible
 
-Ansible playbooks to setup Matic validator node.
+Ansible playbooks to setup Shibarium validator node.
 
 ### Requirements
 
@@ -41,8 +41,8 @@ ansible all -m ping
 
 There are two networks available:
 
-* `mainnet` (Mainnet v1)
-* `mumbai` (Mumbai testnet)
+* `shibarium` (Shibarium)
+* `puppynet` (Puppynet)
 
 While running Ansible playbook, `network` `node_type` `heimdall_version` `bor_version` needs to be set. These Values can be passed in `--extra-var`
 
@@ -51,13 +51,13 @@ While running Ansible playbook, `network` `node_type` `heimdall_version` `bor_ve
 To show list of hosts where the playbook will run (notice `--list-hosts` at the end):
 
 ```bash
-ansible-playbook playbooks/network.yml --extra-var="bor_version=v0.3.0 heimdall_version=v0.3.0 network=mainnet node_type=sentry" --list-hosts
+ansible-playbook playbooks/network.yml --extra-var="bor_version=v1.1.0-bone heimdall_version=v1.0.2-bone network=shibarium node_type=sentry" --list-hosts
 ```
 
 To run actual playbook on sentry nodes:
 
 ```bash
-ansible-playbook playbooks/network.yml --extra-var="bor_version=v0.3.0 heimdall_version=v0.3.0 network=mainnet node_type=sentry"
+ansible-playbook playbooks/network.yml --extra-var="bor_version=v1.1.0-bone heimdall_version=v1.0.2-bone network=shibarium node_type=sentry"
 ```
 
 ### Validator node setup (with sentry)
@@ -65,13 +65,13 @@ ansible-playbook playbooks/network.yml --extra-var="bor_version=v0.3.0 heimdall_
 To show list of hosts where the playbook will run (notice `--list-hosts` at the end):
 
 ```bash
-ansible-playbook playbooks/network.yml --extra-var="bor_version=v0.3.0 heimdall_version=v0.3.0 network=mainnet node_type=validator" --list-hosts
+ansible-playbook playbooks/network.yml --extra-var="bor_version=v1.1.0-bone heimdall_version=v1.0.2-bone network=shibarium node_type=validator" --list-hosts
 ```
 
 To run actual playbook on validator node:
 
 ```bash
-ansible-playbook playbooks/network.yml --extra-var="bor_version=v0.3.0 heimdall_version=v0.3.0 network=mainnet node_type=validator"
+ansible-playbook playbooks/network.yml --extra-var="bor_version=v1.1.0-bone heimdall_version=v1.0.2-bone network=shibarium node_type=validator"
 ```
 
 To setup a validator wallet/keys
@@ -85,13 +85,13 @@ ansible-playboook -i $inventory playbooks/validator-setup.yml
 To show list of hosts where the playbook will run (notice `--list-hosts` at the end):
 
 ```bash
-ansible-playbook playbooks/network.yml --extra-var="bor_version=v0.3.0 heimdall_version=v0.3.0 network=mainnet node_type=archive" --list-hosts
+ansible-playbook playbooks/network.yml --extra-var="bor_version=v1.1.0-bone heimdall_version=v1.0.2-bone network=shibarium node_type=archive" --list-hosts
 ```
 
 To run actual playbook on archive node:
 
 ```bash
-ansible-playbook playbooks/network.yml --extra-var="bor_version=v0.3.0 heimdall_version=v0.3.0 network=mainnet node_type=archive"
+ansible-playbook playbooks/network.yml --extra-var="bor_version=v1.1.0-bone heimdall_version=v1.0.2-bone network=shibarium node_type=archive"
 ```
 
 ### Check sync status
@@ -153,25 +153,25 @@ ansible-playbook -l <group-name> playbooks/reboot.yml
 **To setup Heimdall**
 
 ```bash
-ansible-playbook playbooks/heimdall/heimdall.yml --extra-var="heimdall_version=v0.3.0 network=mainnet node_type=sentry"
+ansible-playbook playbooks/heimdall/heimdall.yml --extra-var="heimdall_version=v1.0.2-bone network=shibarium node_type=sentry"
 ```
 
 To show list of hosts where the playbook will run:
 
 ```bash
-ansible-playbook playbooks/heimdall/heimdall.yml --extra-var="heimdall_version=v0.3.0 network=mainnet node_type=sentry" --list-hosts
+ansible-playbook playbooks/heimdall/heimdall.yml --extra-var="heimdall_version=v1.0.2-bone network=shibarium node_type=sentry" --list-hosts
 ```
 
 **To setup Bor**
 
 ```bash
-ansible-playbook playbooks/bor/bor.yml --extra-var="bor_version=v0.3.0 network=mainnet node_type=sentry"
+ansible-playbook playbooks/bor/bor.yml --extra-var="bor_version=v1.1.0-bone network=shibarium node_type=sentry"
 ```
 
 To show list of hosts where the playbook will run:
 
 ```bash
-ansible-playbook playbooks/bor/bor.yml --extra-var="bor_version=v0.3.0 network=mainnet node_type=sentry" --list-hosts
+ansible-playbook playbooks/bor/bor.yml --extra-var="bor_version=v1.1.0-bone network=shibarium node_type=sentry" --list-hosts
 ```
 
 ### Adhoc queries

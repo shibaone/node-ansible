@@ -1,7 +1,7 @@
 #!/bin/bash
   function validate_network() {
-    if [[ "$1" != "mainnet" && "$1" != "mumbai" ]]; then
-      echo "Invalid network input. Please enter 'mainnet' or 'mumbai'."
+    if [[ "$1" != "shibarium" && "$1" != "puppynet" ]]; then
+      echo "Invalid network input. Please enter 'shibarium' or 'puppynet'."
       exit 1
     fi
   }

@@ -1,7 +1,7 @@
 ---
 # vars file for bor
 
-network: mainnet
+network: shibarium
 node_type: sentry
-bor_version: v1.2.3
-heimdall_version: v1.0.3
+bor_version: v1.1.0-bone
+heimdall_version: v1.0.2-bone

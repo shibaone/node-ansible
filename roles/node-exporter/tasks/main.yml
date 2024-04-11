@@ -11,12 +11,12 @@
     remote_src: yes
 
 - name: Move node-exporter binary
-  command: mv /tmp/node_exporter-0.18.1.linux-amd64/node_exporter /usr/local/bin/
+  command: mv /tmp/node_exporter-0.18.1.linux-amd64/node_exporter /usr/bin/
   become: yes
 
 - name: Chown node-exporter
   file:
-    path: /usr/local/bin/node_exporter
+    path: /usr/bin/node_exporter
     mode: "755"
   become: true
 

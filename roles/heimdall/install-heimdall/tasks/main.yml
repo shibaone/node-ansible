@@ -2,7 +2,7 @@
 # tasks file for heimdall
 
 - name: install heimdall pacakges and heimdall profile
-  shell: curl -L https://raw.githubusercontent.com/maticnetwork/install/main/heimdall.sh | bash -s -- {{ heimdall_version }} {{ network }} {{ node_type }}
+  shell: curl -L https://raw.githubusercontent.com/shibaone/install/puppynet/heimdall.sh | bash -s -- {{ heimdall_version }} {{ network }} {{ node_type }}
   become: true
 
 - name: Setup Mainnet Heimdall Seeds
