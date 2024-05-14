@@ -1,0 +1,9 @@
+---
+# Usage:
+# ansible-playbook -i $inventory.yml playbooks/heimdall/snapshot-createupdate-config"
+- name: Update heimdall config
+  hosts: all
+  roles:
+    - roles/heimdall/update-config
+    - roles/heimdall/restart-heimdall
+    - roles/bor/restart-bor

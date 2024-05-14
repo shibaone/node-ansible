@@ -1,0 +1,8 @@
+---
+# ansible-playbook -i $inventory playbooks/bor/update-config.yml"
+- name: setup and execute a bor config change
+  hosts: all
+  become: true
+  roles:
+    - roles/bor/update-config
+    - roles/bor/restart-bor

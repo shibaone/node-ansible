@@ -1,13 +1,65 @@
 ---
-# For this to work properly bor has to be running with the defined path as listed as /var/lib/bor/bor.ipc in the bor
-# config.toml located at /var/lib/bor/config.toml.
-# If you can not use ipc, adjust the shell command in the task to this:
-#   shell: 'bor bootnode -dry-run -node-key /var/lib/bor/data/bor/nodekey -listen-addr 0.0.0.0:30304'
-# It will print the proper details, just will not be as clean as the ipc method.
-- name: get enode details for a host
-  shell: 'sudo bor attach /var/lib/bor/bor.ipc --exec admin.nodeInfo.enode'
-  register: bor_output
+- name: uncomment p2p discovery
+  shell: sed -i 's|.*\[p2p.discovery\]|  \[p2p.discovery\] |g' /var/lib/bor/config.toml
+  become: true
 
-- debug:
-    msg:
-      enode: "{{ bor_output }}"
+- name: make bor the user of data directory
+  shell: chown bor /var/lib/bor
+  become: true
+
+- name: add shibarium bootnodes
+  shell: sed -i 's|.*bootnodes =.*|    bootnodes = ["enode://1711a371c7ae1c1f029d0c3eb58d7e875901ee9990dafe6969f86027cca7fa462455be641560a1e25dd09138cf57163c7c19d784247874f60b2a206b61a03e2b@44.204.200.100:30303", "enode://1efa5518ab2515b6fbbe1dc99b8bede1bf8fa373e2753e0819369e711ba0f56f00d71b17ca85ba3a56c4909cc7b1cf65ca2f53bfc483542a93bc67318dfdfa45@18.136.201.99:30303", "enode://d97215a5e3cff60e3f001aa2c91bed2d28101e7513681abe1254a667c4232ccd9143985f3225a3f86c8247cf3c91a355ec2a2cfea500ea203014e625a2aee2a7@3.99.233.157:30303", "enode://03d5616779bc4109bcfa8cea10423411f1c2872f26b49863cfadc4fde88f0bdf7a56ef31d1ec9699b3a54342013d257184cd9b9480cf632a32b458cd7b6e2a6a@63.32.53.219:30303", "enode://455c8e9776cf35592b528cb046d56400ff361b1ca9ce833205e4dc41e45bdf7fbc5e50dfd147037f7357a7115169a461dae2474f50697771871febb00ee2974f@52.12.214.141:30303"]|g' /var/lib/bor/config.toml
+  when: network == "shibarium"
+  become: true
+
+- name: add puppynet bootnodes
+  shell: sed -i 's|.*bootnodes =.*|    bootnodes = ["enode://c6b669fa696040700bbaca58a4dc340d077cbb5afec9c90bcc65c06eae3d39f46ca23993ed59200d5b74f53256222b1e8c14396a44c41dd6c300fb8f30519015@34.228.222.213:30303", "enode://364e48280cc17ba65baf16d77cc94e51f329b5e13ad203f179a7260717a6e77ebbec4cffe49310248b953cca4fe813606a419837fc989a57a8fa9e5c8a761034@18.143.185.174:30303", "enode://97bce714bd2a1b1a88ad2a8ab0a216c2eb4b13c6ad09a4901917b188b1f29a8ce8a3336b6137ddb56dddd95d2641a247df30a6cf435a64d82412660108bf5c86@3.99.174.151:30303", "enode://cda1b3e8bc2343c8c00b62a91b89dff63d40327f856a6d95602338f2774f85d78877eaa5c42782c5dfd3798cb0a6724ac8a7fbb9b639972c3b1e178ea4f05fa2@3.254.67.220:30303"]|g' /var/lib/bor/config.toml
+  when: network == "puppynet"
+  become: true
+
+- name: add puppynet static-nodes
+  shell: sed -i 's|.*static-nodes =.*|   static-nodes = ["enode://c6b669fa696040700bbaca58a4dc340d077cbb5afec9c90bcc65c06eae3d39f46ca23993ed59200d5b74f53256222b1e8c14396a44c41dd6c300fb8f30519015@34.228.222.213:30303", "enode://364e48280cc17ba65baf16d77cc94e51f329b5e13ad203f179a7260717a6e77ebbec4cffe49310248b953cca4fe813606a419837fc989a57a8fa9e5c8a761034@18.143.185.174:30303", "enode://97bce714bd2a1b1a88ad2a8ab0a216c2eb4b13c6ad09a4901917b188b1f29a8ce8a3336b6137ddb56dddd95d2641a247df30a6cf435a64d82412660108bf5c86@3.99.174.151:30303", "enode://cda1b3e8bc2343c8c00b62a91b89dff63d40327f856a6d95602338f2774f85d78877eaa5c42782c5dfd3798cb0a6724ac8a7fbb9b639972c3b1e178ea4f05fa2@3.254.67.220:30303"]|g' /var/lib/bor/config.toml
+  when: network == "puppynet"
+  become: true
+
+- name: add shibarium static-nodes
+  shell: sed -i 's|.*static-nodes =.*|   static-nodes = [ "enode://1711a371c7ae1c1f029d0c3eb58d7e875901ee9990dafe6969f86027cca7fa462455be641560a1e25dd09138cf57163c7c19d784247874f60b2a206b61a03e2b@44.204.200.100:30303", "enode://1efa5518ab2515b6fbbe1dc99b8bede1bf8fa373e2753e0819369e711ba0f56f00d71b17ca85ba3a56c4909cc7b1cf65ca2f53bfc483542a93bc67318dfdfa45@18.136.201.99:30303", "enode://d97215a5e3cff60e3f001aa2c91bed2d28101e7513681abe1254a667c4232ccd9143985f3225a3f86c8247cf3c91a355ec2a2cfea500ea203014e625a2aee2a7@3.99.233.157:30303", "enode://03d5616779bc4109bcfa8cea10423411f1c2872f26b49863cfadc4fde88f0bdf7a56ef31d1ec9699b3a54342013d257184cd9b9480cf632a32b458cd7b6e2a6a@63.32.53.219:30303", "enode://455c8e9776cf35592b528cb046d56400ff361b1ca9ce833205e4dc41e45bdf7fbc5e50dfd147037f7357a7115169a461dae2474f50697771871febb00ee2974f@52.12.214.141:30303" ]|g' /var/lib/bor/config.toml
+  when: network == "shibarium"
+  become: true
+
+- name: add values to the maxpeers value
+  ansible.builtin.lineinfile:
+    path: /var/lib/bor/config.toml
+    regexp: '^\s*maxpeers =.*$'
+    line: '\t maxpeers = 50'
+    backrefs: yes
+  when: node_type == "sentry" or "archive"
+  become: true
+
+- name: add values to the max peers value
+  ansible.builtin.lineinfile:
+    path: /var/lib/bor/config.toml
+    regexp: '^\s*maxpeers =.*$'
+    line: '\t maxpeers = 20'
+    backrefs: yes
+  when: node_type == "validator"
+  become: true
+
+- name: add values for max peers for bootnode
+  ansible.builtin.lineinfile:
+    path: /var/lib/bor/config.toml
+    regexp: '^\s*maxpeers =.*$'
+    line: '\t maxpeers = 200'
+    backrefs: yes
+  when: node_type == "bootnode"
+  become: true
+
+- name: start bor service
+  systemd:
+    state: restarted
+    daemon-reload: yes
+    name: bor.service
+  become: true
+
+
+

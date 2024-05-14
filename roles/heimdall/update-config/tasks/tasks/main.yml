@@ -1,8 +1,99 @@
 ---
-- name: get heimdall seed
-  shell: 'sudo heimdalld tendermint show-node-id'
-  register: heimdall_seed_output
+- name: Setup shibarium Heimdall Seeds
+  shell: sed -i 's|^seeds =.*|seeds = "96f333f77d5e2f877d3afe4a3643e4f99949ef5c@44.204.200.100:26656,e6676c16d8a9ec98bbbce8d137a3765632720328@18.136.201.99:26656,8c71c016de039e50e48f74683784054f46bd0a1c@3.99.233.157:26656,fb613910f04f0ae0001d93b70552d4d5c358ad78@63.32.53.219:26656,08c3509327941a593eef258f23ab568c10d28905@52.12.214.141:26656"|g' /var/lib/heimdall/config/config.toml
+  when: network == "shibarium"
+  become: true
 
-- debug:
-    msg:
-      heimdall-seed: "{{ heimdall_seed_output }}"
+- name: Setup puppynet Heimdall Seeds
+  shell: sed -i 's|^seeds =.*|seeds = "ae2bdd3745c0df83a3e082438e0c54ee8ed77ab4@34.228.222.213:26656,b15dc8355c1eed54693a6221dab1f9c8bd1d92a4@18.143.185.174:26656,a04797dfe696c2fe83a4bf122261c13408c1db39@3.99.174.151:26656,5509016ddc02cdfdbb198efe4201f63b16ce7476@3.254.67.220:26656"|g' /var/lib/heimdall/config/config.toml
+  when: network == "puppynet"
+  become: true
+
+- name: update the persistent peers for shibarium heimdall
+  shell: sed -i 's|^persistent_peers =.*|persistent_peers = "96f333f77d5e2f877d3afe4a3643e4f99949ef5c@44.204.200.100:26656,e6676c16d8a9ec98bbbce8d137a3765632720328@18.136.201.99:26656,8c71c016de039e50e48f74683784054f46bd0a1c@3.99.233.157:26656,fb613910f04f0ae0001d93b70552d4d5c358ad78@63.32.53.219:26656,08c3509327941a593eef258f23ab568c10d28905@52.12.214.141:26656"|g' /var/lib/heimdall/config/config.toml
+  when: network == "shibarium"
+  become: true
+
+- name: update the persistent peers for puppynet heimdall
+  shell: sed -i 's|^persistent_peers =.*|persistent_peers = "ae2bdd3745c0df83a3e082438e0c54ee8ed77ab4@34.228.222.213:26656,b15dc8355c1eed54693a6221dab1f9c8bd1d92a4@18.143.185.174:26656,a04797dfe696c2fe83a4bf122261c13408c1db39@3.99.174.151:26656,5509016ddc02cdfdbb198efe4201f63b16ce7476@3.254.67.220:26656"|g' /var/lib/heimdall/config/config.toml
+  when: network == "puppynet"
+  become: true
+
+- name: update heimdall inbound peers
+  ansible.builtin.lineinfile:
+    path: /var/lib/heimdall/config/config.toml
+    regexp: '^max_num_inbound_peers =.*$'
+    line: 'max_num_inbound_peers = 100'
+    backrefs: yes
+  when: node_type == "sentry" or "archive"
+  become: true
+
+- name: update heimdall outbound peers
+  ansible.builtin.lineinfile:
+    path: /var/lib/heimdall/config/config.toml
+    regexp: '^max_num_outbound_peers =.*$'
+    line: 'max_num_outbound_peers = 100'
+    backrefs: yes
+  when: node_type == "sentry" or "archive"
+  become: true
+
+- name: update heimdall inbound peers
+  ansible.builtin.lineinfile:
+    path: /var/lib/heimdall/config/config.toml
+    regexp: '^max_num_inbound_peers =.*$'
+    line: 'max_num_inbound_peers = 50'
+    backrefs: yes
+  when: node_type == "validator"
+  become: true
+
+- name: update heimdall outbound peers
+  ansible.builtin.lineinfile:
+    path: /var/lib/heimdall/config/config.toml
+    regexp: '^max_num_outbound_peers =.*$'
+    line: 'max_num_outbound_peers = 50'
+    backrefs: yes
+  when: node_type == "validator"
+  become: true
+
+- name: update heimdall inbound peers
+  ansible.builtin.lineinfile:
+    path: /var/lib/heimdall/config/config.toml
+    regexp: '^max_num_inbound_peers =.*$'
+    line: 'max_num_inbound_peers = 200'
+    backrefs: yes
+  when: node_type == "bootnode"
+  become: true
+
+- name: update heimdall outbound peers
+  ansible.builtin.lineinfile:
+    path: /var/lib/heimdall/config/config.toml
+    regexp: '^max_num_outbound_peers =.*$'
+    line: 'max_num_outbound_peers = 200'
+    backrefs: yes
+  when: node_type == "bootnode"
+  become: true
+
+- name: update heimdall external address
+  ansible.builtin.lineinfile:
+    path: /var/lib/heimdall/config/config.toml
+    regexp: '^external_address =.*$'
+    line: 'external_address = "{{ ansible_host }}:26656"'
+    backrefs: yes
+  when: node_type == "sentry" or "archive" or "bootnode"
+  become: true
+
+- name: update heimdall external address
+  ansible.builtin.lineinfile:
+    path: /var/lib/heimdall/config/config.toml
+    regexp: '^external_address =.*$'
+    line: 'external_address = ""'
+    backrefs: yes
+  when: node_type == "validator"
+  become: true
+
+- name: start Heimdall service
+  systemd:
+    state: restarted
+    daemon-reload: yes
+    name: heimdalld.service
+  become: yes
