@@ -1,0 +1,9 @@
+---
+- name: get heimdall config.toml and heimdall-config.toml
+  shell: 'sudo cat /var/lib/heimdall/config/config.toml'
+
+- name: get heimdall heimdall-config.toml
+  shell: 'sudo cat /var/lib/heimdall/config/heimdall-config.toml'
+
+- name: get heimdall genesis.json
+  shell: 'sudo cat /var/lib/heimdall/config/genesis.json'

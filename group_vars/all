@@ -2,5 +2,5 @@
 ansible_user: ubuntu
 network: shibarium
 node_type: sentry
-bor_version: v1.1.0-bone
+bor_version: v1.1.1-bone
 heimdall_version: v1.0.2-bone
