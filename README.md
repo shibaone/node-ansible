@@ -76,7 +76,7 @@ ansible-playbook playbooks/network.yml --extra-var="bor_version=v1.1.1-bone heim
 
 To setup a validator wallet/keys
 ```bash
-ansible-playboook -i $inventory playbooks/validator-setup.yml
+ansible-playbook -i $inventory playbooks/validator-setup.yml
 ```
 
 
