@@ -47,6 +47,12 @@ There are two networks available:
 While running Ansible playbook, `network` `node_type` `heimdall_version` `bor_version` needs to be set. These Values can be passed in `--extra-var`
 
 - NOTE -- Check the latest version of [Heimdall](https://github.com/shibaone/heimdall/releases) and [Bor](https://github.com/shibaone/bor/releases) for Shibarium (tags -- 1.x.x-bone) and Puppynet (tags -- 1.x.x-bone-beta-x).
+OR 
+### Check the latest version here
+- [Puppynet Bor](https://puppynet-bor-ethstat.shib.io/)
+- [Puppynet Heimdall](https://puppynet-heimdall-ethstat.shib.io/)
+- [Shibarium Bor](https://shibarium-bor-ethstat.shib.io/)
+- [Shibarium Heimdall](https://shibarium-heimdall-ethstat.shib.io/)
 
 ### Sentry node setup
 
